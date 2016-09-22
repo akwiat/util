@@ -1,5 +1,9 @@
-define( ["util/AlexUtils"], function (util) {
+//define( ["util/AlexUtils"], function (util) {
+var util = require("util/AlexUtils");
+require("style-loader!css-loader!lib/jquery.terminal-0.10.12.css");
+require("script!lib/jQuery.js");
 
+require("script!lib/jquery.terminal.js")
 var Terminal = function(divName) {
   this.terminal = undefined;
   this.divName = divName;
@@ -99,8 +103,19 @@ Terminal.basicControlFn = function(command, term) {
 var TerminalManager = function() {
   this.terminals = new util.TrackedObj();
 }
+TerminalManager.prototype.initialize = function() {
+  //debugger;
+  jQuery(function(dollarsign, undefined){
+    //debugger;
+     this.registerTerminals(dollarsign);
+     //this.afterTerminalSetup();
+  }.bind(this));
+}
 TerminalManager.prototype.addTerminal = function(divName) {
-  this.terminals.register(divName, new Terminal(divName));
+  var nt = new Terminal(divName);
+  this.terminals.register(divName, nt);
+  return nt;
+
 }
 TerminalManager.prototype.getTerminal = function(name) {
 	return this.terminals[name];
@@ -146,5 +161,5 @@ TerminalManager.prototype.registerOneTerminal = function(dollarsign, terminal) {
 */
 }
 
-return TerminalManager;
-});
+module.exports = TerminalManager;
+//});
